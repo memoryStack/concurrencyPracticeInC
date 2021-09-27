@@ -6,7 +6,7 @@ class dataClass {
     private: 
         int dataA, dataB;
     public:
-        dataClass(): dataA(-1), dataB(-2) // this is known as initializer list
+        dataClass(int dA = -1, int dB = -1): dataA(dA), dataB(dB) // this is known as initializer list
         {
             cout<<"constructor called"<<endl;
         }
@@ -20,8 +20,7 @@ class dataClass {
 };
 
 int main(){
-    dataClass d;
-    d.setData(10);
+    dataClass d(10, 20);
     cout<<d.getData()<<endl;
 }
 
