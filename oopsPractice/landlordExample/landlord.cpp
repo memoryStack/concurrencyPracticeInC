@@ -294,3 +294,18 @@ void expenseInputScreen::getExpense() {
     ptrExpenseRecord->insertExp(ptrExpense);
 }
 
+//////////////////methods for class annualReport/////////////
+annualReport::annualReport(rentRecord* pRR, expenseRecord* pER) : ptrRR(pRR), ptrER(pER)
+    { /* empty*/ }
+
+void annualReport::display() {
+    cout << "Annual Summary\n--------------\n";
+    cout << "Income\n";
+    cout << "\tRent\t\t";
+    rents = ptrRR->getSumOfRents();
+    cout << rents << endl;
+    cout << "Expenses\n";
+    expenses = ptrER->displaySummary();
+    cout << "\nBalance\t\t\t" << rents - expenses << endl;
+}
+
