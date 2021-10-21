@@ -127,3 +127,49 @@ ostream& operator << (ostream& s, const rentRow& an) {
 bool compareRows::operator () (rentRow* ptrR1, rentRow* ptrR2) const {
     return *ptrR1 < *ptrR2;
 }
+
+///////////////////methods for class rentRecord/////////////////
+rentRecord::~rentRecord() {
+    while(!setPtrsRR.empty()) {
+        iter = setPtrsRR.begin();
+        delete *iter;
+        setPtrsRR.erase(iter);
+    }
+}
+
+void rentRecord::insertRent(int aptNo, int month, float amount) {
+    rentRow searchRow(aptNo); //temp row with same aptNo
+    iter = setPtrsRR.begin(); //search setPtrsRR
+    while(iter != setPtrsRR.end()) {
+        if (searchRow == **iter) {
+            (*iter)->setRent(month, amount);
+            return;
+        }
+        else iter++;
+    }
+    rentRow* ptrRow = new rentRow(aptNo); //make new row
+    ptrRow->setRent(month, amount); //put rent in row
+    setPtrsRR.insert(ptrRow); //put row in vector
+} // end insertRent()
+
+void rentRecord::display() {
+    cout << "\nAptNo\tJan  Feb  Mar  Apr  May  Jun  "
+    << "Jul Aug Sep Oct Nov Dec\n"
+    << "---------------------------------"
+    << "---------------------------------\n";
+    if (setPtrsRR.empty()) cout << "***No rents***\n";
+    else {
+        iter = setPtrsRR.begin();
+        while(iter != setPtrsRR.end()) cout << **iter++;
+    }
+}
+
+float rentRecord::getSumOfRents() {
+    float sumRents = 0.0;
+    iter = setPtrsRR.begin();
+    while(iter != setPtrsRR.end()) {
+        sumRents += (*iter)->getSumOfRow();
+        iter++;
+    }
+   return sumRents;
+}
