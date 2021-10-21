@@ -173,3 +173,23 @@ float rentRecord::getSumOfRents() {
     }
    return sumRents;
 }
+
+/////////////////methods for class rentInputScreen//////////////
+void rentInputScreen::getRent() {
+    cout << "Enter tenant’s name: ";
+    getaLine(renterName);
+    aptNo = ptrTenantList->getAptNo(renterName);
+    if (aptNo > 0) { // if name found,
+        // get rent amount
+        cout << "Enter amount paid (345.67): ";
+        cin >> rentPaid;
+        cin.ignore(80, '\n');
+        cout << "Enter month rent is for (1-12): ";
+        cin >> month;
+        cin.ignore(80, '\n');
+        month--; // (internal is 0-11)
+        ptrRentRecord->insertRent(aptNo, month, rentPaid);
+    }
+    else cout << "No tenant with that name.\n";
+} // end getRent()
+
