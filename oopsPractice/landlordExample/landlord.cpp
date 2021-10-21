@@ -193,3 +193,28 @@ void rentInputScreen::getRent() {
     else cout << "No tenant with that name.\n";
 } // end getRent()
 
+///////////////////methods for class expense////////////////////
+bool operator < (const expense& e1, const expense& e2) {
+    if (e1.month == e2.month) return e1.day < e2.day;
+    else return e1.month < e2.month;
+}
+
+bool operator == (const expense& e1, const expense& e2) {
+    return e1.month == e2.month && e1.day == e2.day;
+}
+
+ostream& operator << (ostream& s, const expense& exp) {
+    s << exp.month << '/' << exp.day << '\t' << exp.payee << '\t';
+    s << exp.amount << '\t' << exp.category << endl;
+    return s;
+}
+
+bool compareDates::operator () (expense* ptrE1, expense* ptrE2) const {
+    return *ptrE1 < *ptrE2;
+}
+
+bool compareCategories::operator () (expense* ptrE1, expense* ptrE2) const {
+    return ptrE1->category < ptrE2->category;
+}
+
+
