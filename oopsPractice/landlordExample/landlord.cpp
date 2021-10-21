@@ -59,3 +59,37 @@ bool compareTenants::operator () (tenant* ptrT1, tenant* ptrT2) const {
     return *ptrT1 < *ptrT2;
 }
 
+///////////////////methods for class tenantList/////////////////
+tenantList::~tenantList() { // destructor
+    while(!setPtrsTens.empty()) {
+        iter = setPtrsTens.begin();
+        delete *iter;
+        setPtrsTens.erase(iter);
+    }
+} // end ~tenantList()
+
+void tenantList::insertTenant(tenant* ptrT) {
+    setPtrsTens.insert(ptrT); //insert
+}
+
+int tenantList::getAptNo(string tName) { //name on list?
+    int aptNo;
+    tenant dummy(tName, 0);
+    iter = setPtrsTens.begin();
+    while(iter != setPtrsTens.end()) {
+        aptNo = (*iter)->getAptNumber();
+        if(dummy == **iter++) return aptNo;
+    }
+    return -1;
+}
+
+void tenantList::display() {
+    cout << "\nApt#\tTenant name\n-------------------\n";
+    if (setPtrsTens.empty()) cout << "***No tenants***\n";
+    else {
+        iter = setPtrsTens.begin();
+        while(iter != setPtrsTens.end())
+            cout << **iter++;
+    }
+}
+

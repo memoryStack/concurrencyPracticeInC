@@ -36,7 +36,7 @@ class compareTenants { //function object -- compares tenants
 class tenantList {
     private:
         // set of pointers to tenants
-        set<tenant*, compareTenants> setPtrsTens;
+        set<tenant*, compareTenants> setPtrsTens; // learned a new thing today
         set<tenant*, compareTenants>::iterator iter;
     public:
         ~tenantList(); // destructor (deletes tenants)
