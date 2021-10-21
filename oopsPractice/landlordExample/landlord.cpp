@@ -93,3 +93,37 @@ void tenantList::display() {
     }
 }
 
+/////////////////////methods for class rentRow//////////////////
+rentRow::rentRow(int an) : aptNo(an) { // 1-arg constructor
+   fill(&rent[0], &rent[12], 0);
+}
+
+void rentRow::setRent(int m, float am) {
+    rent[m] = am;
+}
+
+float rentRow::getSumOfRow() { // sum of rents in row
+    return accumulate( &rent[0], &rent[12], 0);
+}
+
+bool operator < (const rentRow& t1, const rentRow& t2) {
+    return t1.aptNo < t2.aptNo;
+}
+
+bool operator == (const rentRow& t1, const rentRow& t2) {
+    return t1.aptNo == t2.aptNo;
+}
+
+ostream& operator << (ostream& s, const rentRow& an) {
+    s << an.aptNo << '\t';
+    for(int j=0; j<12; j++) {
+        if (an.rent[j] == 0) s<<" 0 ";
+        else   s << an.rent[j] << " ";
+    }
+    s << endl;
+    return s;
+}
+
+bool compareRows::operator () (rentRow* ptrR1, rentRow* ptrR2) const {
+    return *ptrR1 < *ptrR2;
+}
