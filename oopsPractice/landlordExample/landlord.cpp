@@ -309,3 +309,82 @@ void annualReport::display() {
     cout << "\nBalance\t\t\t" << rents - expenses << endl;
 }
 
+////////////////methods for class userInterface//////////////
+userInterface::userInterface() {
+    //these reports exist for the life of the program
+    ptrTenantList     = new tenantList;
+    ptrRentRecord     = new rentRecord;
+    ptrExpenseRecord  = new expenseRecord;
+}
+
+userInterface::~userInterface() {
+    delete ptrTenantList;
+    delete ptrRentRecord;
+    delete ptrExpenseRecord;
+}
+
+void userInterface::interact() {
+    while (true) {
+        cout << "Enter ‘i’ to input data, \n"
+                << "      ‘d’ to display a report, \n"
+                << "      ‘q’ to quit program: ";
+        ch = getaChar();
+        if (ch=='i') {
+            // enter data
+            cout << "Enter ‘t’ to add tenant, \n"
+                    << "      ‘r’ to record rent payment, \n"
+                    << "      ‘e’ to record expense: ";
+            ch = getaChar();
+            switch(ch) {
+                //input screens exist only while being used
+                case 't':
+                    ptrTenantInputScreen = new tenantInputScreen(ptrTenantList);
+                    ptrTenantInputScreen->getTenant();
+                    delete ptrTenantInputScreen;
+                break;
+                case 'r':
+                    ptrRentInputScreen = new rentInputScreen(ptrTenantList, ptrRentRecord);
+                    ptrRentInputScreen->getRent();
+                    delete ptrRentInputScreen;
+                break;
+                case 'e':
+                    ptrExpenseInputScreen = new expenseInputScreen(ptrExpenseRecord);
+                    ptrExpenseInputScreen->getExpense();
+                    delete ptrExpenseInputScreen;
+                break;
+                default:
+                    cout << "Unknown input option\n";
+                    break;
+            } // end switch
+        } //endif
+        else if(ch=='d') {                       // display data
+            cout << "Enter ‘t’ to display tenants, \n"
+            << "‘r’ to display rents\n"
+            << "‘e’ to display expenses, \n"
+            << "‘a’ to display annual report: ";
+            ch = getaChar();
+            switch(ch) {
+                case 't':
+                    ptrTenantList->display();
+                break;
+                case 'r':
+                    ptrRentRecord->display();
+                break;
+                case 'e':
+                    ptrExpenseRecord->display();
+                break;
+                case 'a':
+                    ptrAnnualReport = new annualReport(ptrRentRecord, ptrExpenseRecord);
+                    ptrAnnualReport->display();
+                    delete ptrAnnualReport;
+                break;
+                default:
+                    cout << "Unknown display option\n";
+                break;
+            }
+        } else if(ch=='q') return;
+        else
+            cout << "Unknown option. Enter only ‘i’, ‘d’ or ‘q’\n";
+    }  // end while
+}
+
