@@ -217,4 +217,56 @@ bool compareCategories::operator () (expense* ptrE1, expense* ptrE2) const {
     return ptrE1->category < ptrE2->category;
 }
 
+//////////////////methods for class expenseRecord///////////////
+expenseRecord::~expenseRecord() {
+    while(!vectPtrsExpenses.empty()) {
+        iter = vectPtrsExpenses.begin();
+        delete *iter;
+        vectPtrsExpenses.erase(iter);
+    }
+}
+
+void expenseRecord::insertExp(expense* ptrExp) {
+    vectPtrsExpenses.push_back(ptrExp);
+}
+
+void expenseRecord::display() {
+   cout << "\nDate\tPayee\t\tAmount\tCategory\n"
+        << "---------------------------------------\n";
+    if (vectPtrsExpenses.size() == 0) cout << "***No expenses***\n";
+    else {
+        sort(vectPtrsExpenses.begin(), vectPtrsExpenses.end(), compareDates());
+        iter = vectPtrsExpenses.begin();
+        while(iter != vectPtrsExpenses.end())
+            cout << **iter++;
+    }
+}
+
+float expenseRecord::displaySummary() {// used by annualReport
+    float totalExpenses = 0;
+    if (vectPtrsExpenses.size() == 0) {
+        cout << "\tAll categories\t0\n";
+        return 0;
+    }
+    // sort by category
+    sort(vectPtrsExpenses.begin(), vectPtrsExpenses.end(), compareCategories());
+    // for each category, sum the entries
+    iter = vectPtrsExpenses.begin();
+    string tempCat = (*iter)->category;
+    float sumCat = 0.0;
+    while( iter != vectPtrsExpenses.end()) {
+        if(tempCat == (*iter)->category)
+            sumCat += (*iter)->amount; // same category
+        else {                            // different category
+            cout << '\t' << tempCat << '\t' << sumCat << endl;
+            totalExpenses += sumCat;
+            tempCat = (*iter)->category;
+            sumCat = (*iter)->amount;
+        }
+        iter++;
+    } // end while
+    totalExpenses += sumCat;
+    cout << '\t' << tempCat << '\t' << sumCat << endl;
+    return totalExpenses;
+} // end displaySummary()
 
