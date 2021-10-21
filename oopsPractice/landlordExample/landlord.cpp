@@ -270,3 +270,27 @@ float expenseRecord::displaySummary() {// used by annualReport
     return totalExpenses;
 } // end displaySummary()
 
+//////////////methods for class expenseInputScreen//////////////
+expenseInputScreen::expenseInputScreen(expenseRecord* per) : ptrExpenseRecord(per)
+    { /*empty*/ }
+
+void expenseInputScreen::getExpense() {
+    int month, day;
+    string category, payee;
+    float amount;
+    cout << "Enter month (1-12): ";
+    cin >> month;
+    cin.ignore(80, '\n');
+    cout << "Enter day (1-31): ";
+    cin >> day;
+    cin.ignore(80, '\n');
+    cout << "Enter expense category (Repairing, Utilities): ";
+    getaLine(category);
+    cout << "Enter payee " << "(Bob’s Hardware, Big Electric Co): ";
+    getaLine(payee);
+    cout << "Enter amount (39.95): "; cin >> amount;
+    cin.ignore(80, '\n');
+    expense* ptrExpense = new expense(month, day, category, payee, amount);
+    ptrExpenseRecord->insertExp(ptrExpense);
+}
+
